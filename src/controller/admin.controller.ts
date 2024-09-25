@@ -4,11 +4,11 @@ import { asyncHandler } from '../utilities/asyncHandler';
 import { UserRegistry } from '../models/user.model';
 
 import { AppDataSource } from '../db';
-import { Admin, Admin_Level, AdminTable } from '../models/admin.model';
+import { Admin, Admin_level, AdminTable } from '../models/admin.model';
 
-const SetAdminLevel = asyncHandler(
+const setAdminLevel = asyncHandler(
   async (
-    req: Request<{ _id: string; admin_id: string; level: Admin_Level }>,
+    req: Request<{ _id: string; admin_id: string; level: Admin_level }>,
     res: Response,
     next: NextFunction,
   ) => {
@@ -30,9 +30,9 @@ const SetAdminLevel = asyncHandler(
     }
   },
 );
-const GetAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+const getAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await AdminTable.LoadAdminsFromUserRegistry();
+    await AdminTable.loadAdminsFromUserRegistry();
     const admins: Admin[] = await AdminTable.createQueryBuilder().getMany();
     //  res.send('ok')
     if (admins.length === 0) {
@@ -49,7 +49,7 @@ const GetAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunc
   // res.send("ok")
 });
 
-const GetAll = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+const getAll = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users: User[] = await UserRegistry.createQueryBuilder('user').getMany();
     if (users.length === 0) {
@@ -63,7 +63,7 @@ const GetAll = asyncHandler(async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 });
-const RegisterUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+const registerUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userInfo: User = req.body;
 
@@ -101,7 +101,7 @@ const RegisterUser = asyncHandler(async (req: Request, res: Response, next: Next
   }
 });
 
-const DeleteUser = asyncHandler(
+const deleteUser = asyncHandler(
   async (
     req: Request<Array<{ user_id?: string; email?: string }>>,
     res: Response,
@@ -148,4 +148,4 @@ const DeleteUser = asyncHandler(
   },
 );
 
-export { RegisterUser, GetAll, DeleteUser, GetAdmin, SetAdminLevel };
+export { registerUser, getAll, deleteUser, getAdmin, setAdminLevel };

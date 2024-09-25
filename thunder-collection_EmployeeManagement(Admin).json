@@ -1,86 +1,86 @@
 {
-    "clientName": "Thunder Client",
-    "collectionName": "EmployeeManagement(Admin)",
-    "collectionId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
-    "dateExported": "2024-09-25T11:43:46.599Z",
-    "version": "1.2",
-    "folders": [],
-    "requests": [
-        {
-            "_id": "e777173b-284f-4587-8dd9-5c9448a353a2",
-            "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
-            "containerId": "",
-            "name": "https://localhost:4000/admin/allUsers",
-            "url": "http://localhost:4000/admin/allUsers",
-            "method": "GET",
-            "sortNum": 10000,
-            "created": "2024-09-25T11:40:30.875Z",
-            "modified": "2024-09-25T11:40:30.875Z",
-            "headers": []
-        },
-        {
-            "_id": "4d767847-b708-470e-a230-653085a60026",
-            "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
-            "containerId": "",
-            "name": "http://localhost:4000/admin/deleteUser",
-            "url": "http://localhost:4000/admin/deleteUser",
-            "method": "DELETE",
-            "sortNum": 20000,
-            "created": "2024-09-25T11:40:39.290Z",
-            "modified": "2024-09-25T11:40:39.290Z",
-            "headers": [],
-            "body": {
-                "type": "json",
-                "raw": "[{\n  \"user_id\": \"USR019\",\n  \"email\":\"testuserdoesnotrequire@mail.com\"\n}, \n{\n \"user_id\": \"USR011\"\n},\n{\n \"email\":\"tester2@gmail.com\"  \n}]\n \n\n",
-                "form": []
-            }
-        },
-        {
-            "_id": "5f01001e-6164-4dee-a780-0137499218c3",
-            "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
-            "containerId": "",
-            "name": "http://localhost:4000/admin/addUser",
-            "url": "http://localhost:4000/admin/addUser",
-            "method": "POST",
-            "sortNum": 30000,
-            "created": "2024-09-25T11:40:47.052Z",
-            "modified": "2024-09-25T11:40:47.052Z",
-            "headers": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"user_id\": \"USR055\",\n  \"full_name\": \"TestUser2\",\n  \"email\": \"tester2@mail.com\",\n  \"password_hash\":\"sudoPasswo32rd\",\n  \"role\": \"admin\"\n}",
-                "form": []
-            }
-        },
-        {
-            "_id": "92bdc1dd-8e23-4ba4-9cf8-34e7b27530bb",
-            "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
-            "containerId": "",
-            "name": "http://localhost:4000/admin/setAdminLevel",
-            "url": "http://localhost:4000/admin/setAdminLevel",
-            "method": "POST",
-            "sortNum": 40000,
-            "created": "2024-09-25T11:40:52.991Z",
-            "modified": "2024-09-25T11:40:52.991Z",
-            "headers": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"_id\":\"90b676f4-6bb5-4864-8cd4-5b1c0dbde9c6\",\n  \"admin_id\":\"USR001\",\n  \"level\": \"super\"\n}",
-                "form": []
-            }
-        },
-        {
-            "_id": "ab68ad9c-407a-4333-ae45-8326f514bd48",
-            "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
-            "containerId": "",
-            "name": "http://localhost:4000/admin/viewAdmin",
-            "url": "http://localhost:4000/admin/viewAdmin",
-            "method": "GET",
-            "sortNum": 50000,
-            "created": "2024-09-25T11:41:04.249Z",
-            "modified": "2024-09-25T11:41:04.249Z",
-            "headers": []
-        }
-    ],
-    "ref": "KJl9AA70_QKiK-6uEjHFUrYfzsnjqBvWwZ0mDFWVPoVRe392ulNqM5B9jkb9_7hQRpuJ4umd6xcA6JVBgMBrKg"
+  "clientName": "Thunder Client",
+  "collectionName": "EmployeeManagement(Admin)",
+  "collectionId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
+  "dateExported": "2024-09-25T11:43:46.599Z",
+  "version": "1.2",
+  "folders": [],
+  "requests": [
+    {
+      "_id": "e777173b-284f-4587-8dd9-5c9448a353a2",
+      "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
+      "containerId": "",
+      "name": "https://localhost:4000/admin/allUsers",
+      "url": "http://localhost:4000/admin/allUsers",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2024-09-25T11:40:30.875Z",
+      "modified": "2024-09-25T11:40:30.875Z",
+      "headers": []
+    },
+    {
+      "_id": "4d767847-b708-470e-a230-653085a60026",
+      "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
+      "containerId": "",
+      "name": "http://localhost:4000/admin/deleteUser",
+      "url": "http://localhost:4000/admin/deleteUser",
+      "method": "DELETE",
+      "sortNum": 20000,
+      "created": "2024-09-25T11:40:39.290Z",
+      "modified": "2024-09-25T11:40:39.290Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "[{\n  \"user_id\": \"USR019\",\n  \"email\":\"testuserdoesnotrequire@mail.com\"\n}, \n{\n \"user_id\": \"USR011\"\n},\n{\n \"email\":\"tester2@gmail.com\"  \n}]\n \n\n",
+        "form": []
+      }
+    },
+    {
+      "_id": "5f01001e-6164-4dee-a780-0137499218c3",
+      "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
+      "containerId": "",
+      "name": "http://localhost:4000/admin/addUser",
+      "url": "http://localhost:4000/admin/addUser",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2024-09-25T11:40:47.052Z",
+      "modified": "2024-09-25T11:40:47.052Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"user_id\": \"USR055\",\n  \"full_name\": \"TestUser2\",\n  \"email\": \"tester2@mail.com\",\n  \"password_hash\":\"sudoPasswo32rd\",\n  \"role\": \"admin\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "92bdc1dd-8e23-4ba4-9cf8-34e7b27530bb",
+      "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
+      "containerId": "",
+      "name": "http://localhost:4000/admin/setAdminLevel",
+      "url": "http://localhost:4000/admin/setAdminLevel",
+      "method": "POST",
+      "sortNum": 40000,
+      "created": "2024-09-25T11:40:52.991Z",
+      "modified": "2024-09-25T11:40:52.991Z",
+      "headers": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"_id\":\"90b676f4-6bb5-4864-8cd4-5b1c0dbde9c6\",\n  \"admin_id\":\"USR001\",\n  \"level\": \"super\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "ab68ad9c-407a-4333-ae45-8326f514bd48",
+      "colId": "c01c69f7-eac8-4a6e-b8e4-03ca4de38940",
+      "containerId": "",
+      "name": "http://localhost:4000/admin/viewAdmin",
+      "url": "http://localhost:4000/admin/viewAdmin",
+      "method": "GET",
+      "sortNum": 50000,
+      "created": "2024-09-25T11:41:04.249Z",
+      "modified": "2024-09-25T11:41:04.249Z",
+      "headers": []
+    }
+  ],
+  "ref": "KJl9AA70_QKiK-6uEjHFUrYfzsnjqBvWwZ0mDFWVPoVRe392ulNqM5B9jkb9_7hQRpuJ4umd6xcA6JVBgMBrKg"
 }

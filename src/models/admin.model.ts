@@ -10,7 +10,7 @@ import {
 import { UserRegistry } from './user.model';
 import { AppDataSource } from '../db';
 
-export type Admin_Level = 'limited' | 'super';
+export type Admin_level = 'limited' | 'super';
 
 export type Admin = {
   _id?: string;
@@ -19,7 +19,7 @@ export type Admin = {
   email: string;
   password_hash: string;
   phone?: string;
-  level?: Admin_Level;
+  level?: Admin_level;
   last_login?: Date;
   created_at?: Date;
 };
@@ -57,7 +57,7 @@ export class AdminTable extends BaseEntity {
     enum: ['limited', 'super'],
     default: 'limited',
   })
-  level?: Admin_Level;
+  level?: Admin_level;
 
   @CreateDateColumn()
   created_at!: Date;
@@ -66,7 +66,7 @@ export class AdminTable extends BaseEntity {
   last_login!: Date;
 
   // function to load admin entries into the admin table automatically when a get request is sent to '...admins/viewAdmins' route
-  static async LoadAdminsFromUserRegistry(): Promise<void> {
+  static async loadAdminsFromUserRegistry(): Promise<void> {
     console.log('adding admins from UserRegistry');
     const admins: UserRegistry[] = await AppDataSource.getRepository(UserRegistry).findBy({
       user_id: Like('USR%'),

@@ -58,7 +58,6 @@ export class UserRegistry extends BaseEntity {
   @CreateDateColumn()
   created_at!: Date;
 
-  // a temporary password needed in hashing and storing the user password.
   private tempPassword: string | undefined;
 
   @BeforeInsert()
