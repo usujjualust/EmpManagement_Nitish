@@ -6,12 +6,7 @@ import { UserRegistry } from '../models/user.model';
 import { AppDataSource } from '../db';
 import { Admin, Admin_Level, AdminTable } from '../models/admin.model';
 
-const SetAdminLevel = asyncHandler(
-  async (
-    req: Request<{ _id: string; admin_id: string; level: Admin_Level }>,
-    res: Response,
-    next: NextFunction,
-  ) => {
+const SetAdminLevel = asyncHandler(async(req: Request<{ _id: string; admin_id: string; level: Admin_Level }>,res: Response,next: NextFunction) => {
     try {
       const updatedAdmin = await AppDataSource.createQueryBuilder()
         .update(AdminTable)

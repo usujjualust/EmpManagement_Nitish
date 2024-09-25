@@ -1,60 +1,23 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import pluginVue from 'eslint-plugin-vue';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import { rules } from "eslint-config-prettier";
 
 export default [
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
   {
-    files: ['**/*.{js,mjs,cjs,ts,vue}'],
-    rules: {
-      'prefer-const': 'error',
-      'no-constant-binary-expression': 'error',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      'no-undef': 'error',
-      camelcase: ['error', { properties: 'never' }],
-      indent: ['error', 2],
-      'linebreak-style': ['error', 'unix'],
-      quotes: ['error', 'single', { avoidEscape: true }],
-      // "semi": ["error", "always"],
-      'no-multiple-empty-lines': ['error', { max: 1 }],
-      'no-trailing-spaces': 'error',
-      'object-curly-spacing': ['error', 'always'],
-      'array-bracket-spacing': ['error', 'never'],
-      'comma-dangle': ['error', 'always-multiline'],
-      'arrow-parens': ['error', 'always'],
-      'no-console': 'warn',
-      'max-len': ['error', { code: 100, ignoreUrls: true }],
-    },
-  },
-  {
+    files: ["**/*.{js,mjs,cjs,ts}"],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
+      globals: globals.browser,
+      parser: tseslint.Parser, // Ensure to use the TypeScript parser
+    },
+    rules: {
+      // Custom rules
+      "no-explicit-any": false,
+      // Other custom rules can go here
+      ...rules, // Include rules from eslint-config-prettier
     },
   },
+  // Recommended configurations
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  ...pluginVue.configs['flat/essential'],
-  {
-    files: ['**/*.vue'],
-    languageOptions: { parserOptions: { parser: tseslint.parser } },
-    rules: {
-      'vue/html-indent': ['error', 2],
-      'vue/max-attributes-per-line': [
-        'error',
-        {
-          singleline: 3,
-          multiline: 1,
-        },
-      ],
-      'vue/require-default-prop': 'error',
-      'vue/component-name-in-template-casing': ['error', 'PascalCase'],
-    },
-  },
-  {
-    ignores: ['dist', 'node_modules'],
-  },
-  eslintConfigPrettier,
 ];
