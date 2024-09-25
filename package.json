@@ -8,10 +8,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon -r dotenv/config --exec node --loader ts-node/esm src/index.ts",
-    "pretest": "npx eslint ./src/index.ts ",
-    "lint": "eslint --ext .js,.vue,.ts src",
-    "lint:fix": "eslint --ext .js,.vue,.ts src --fix",
-    "format": "prettier --write \"src/**/*.{js,vue,ts}\""
+    "lint": "eslint --fix .ts"
   },
   "author": "Nit-bit-Git",
   "license": "ISC",
