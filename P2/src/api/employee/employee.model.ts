@@ -1,12 +1,9 @@
-type Position=
-    | 'Programmer'
-    | 'HR'
-    | 'Manager'
+type Position = 'Programmer' | 'HR' | 'Manager';
 
 export type Employee = {
-    id: string,
-    name: string, 
-    employedAt: Date,
-    position: Position
-    salary: number
-}
+  id: string;
+  name: string;
+  employedAt: Date;
+  position: Position;
+  salary: number;
+};

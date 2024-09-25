@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express';
 const router = Router();
 
 // router.get('/',async (req, res)=>{
@@ -8,4 +8,4 @@ const router = Router();
 //     res.send(data)
 // })
 
-export default router
+export default router;

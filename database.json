@@ -1,9 +1,9 @@
 {
-    "dev": {
-      "driver": "pg",
-      "user": "postgres",
-      "host": "localhost",
-      "database": "postgres",
-      "password": "postgres"
-    }
+  "dev": {
+    "driver": "pg",
+    "user": "postgres",
+    "host": "localhost",
+    "database": "postgres",
+    "password": "postgres"
   }
+}
