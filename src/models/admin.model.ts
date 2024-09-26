@@ -8,9 +8,9 @@ import {
   Equal,
 } from 'typeorm';
 import { UserRegistry } from './user.model';
-import { AppDataSource } from '../db';
+import { APPDATASOURCE } from '../db';
 
-export type Admin_level = 'limited' | 'super';
+export type Adminlevel = 'limited' | 'super';
 
 export type Admin = {
   _id?: string;
@@ -19,7 +19,7 @@ export type Admin = {
   email: string;
   password_hash: string;
   phone?: string;
-  level?: Admin_level;
+  level?: Adminlevel;
   last_login?: Date;
   created_at?: Date;
 };
@@ -57,7 +57,7 @@ export class AdminTable extends BaseEntity {
     enum: ['limited', 'super'],
     default: 'limited',
   })
-  level?: Admin_level;
+  level?: Adminlevel;
 
   @CreateDateColumn()
   created_at!: Date;
@@ -68,8 +68,8 @@ export class AdminTable extends BaseEntity {
   // function to load admin entries into the admin table automatically when a get request is sent to '...admins/viewAdmins' route
   static async loadAdminsFromUserRegistry(): Promise<void> {
     console.log('adding admins from UserRegistry');
-    const admins: UserRegistry[] = await AppDataSource.getRepository(UserRegistry).findBy({
-      user_id: Like('USR%'),
+    const admins: UserRegistry[] = await APPDATASOURCE.getRepository(UserRegistry).findBy({
+      userId: Like('USR%'),
       role: Equal('admin'),
     });
     console.log(admins);
@@ -78,16 +78,16 @@ export class AdminTable extends BaseEntity {
     }
 
     for (const admin of admins) {
-      const { user_id, ...rest } = admin;
+      const { userId, ...rest } = admin;
 
       const existingAdmin = await AdminTable.findOne({
-        where: { admin_id: user_id },
+        where: { admin_id: userId },
       });
 
       if (!existingAdmin) {
         await AdminTable.create({
           ...rest,
-          admin_id: user_id,
+          admin_id: userId,
           level: 'limited',
           phone: '',
         }).save();

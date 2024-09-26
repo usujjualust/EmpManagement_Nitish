@@ -1,8 +1,8 @@
 // import Pool from "pg-pool";
-//PostgreSQL connection Pool is nothing
-//but cached database connections created and maintained
-//to get reused for coming requests instead of
-//making the new connection every time.
+// PostgreSQL connection Pool is nothing
+// but cached database connections created and maintained
+// to get reused for coming requests instead of
+// making the new connection every time.
 // const pool = new Pool({
 //     user: process.env.POSTGRES_USER,
 //     host: process.env.POSTGRES_HOST,
@@ -16,7 +16,7 @@ import { DataSource } from 'typeorm';
 import { UserRegistry } from '../models/user.model';
 import { AdminTable } from '../models/admin.model';
 
-const AppDataSource = new DataSource({
+const APPDATASOURCE = new DataSource({
   type: 'postgres',
   username: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,
@@ -30,4 +30,4 @@ const AppDataSource = new DataSource({
   entities: [UserRegistry, AdminTable],
 });
 
-export { AppDataSource };
+export { APPDATASOURCE };

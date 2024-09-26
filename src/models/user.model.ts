@@ -14,7 +14,7 @@ type Status = 'active' | 'notice' | 'inactive';
 
 export type User = {
   _id?: string;
-  user_id: string;
+  userId: string;
   full_name: string;
   email: string;
   password_hash: string;
@@ -29,7 +29,7 @@ export class UserRegistry extends BaseEntity {
   _id!: string;
 
   @Column({ unique: true })
-  user_id!: string;
+  userId!: string;
 
   @Column()
   full_name!: string;

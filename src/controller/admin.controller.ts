@@ -3,17 +3,17 @@ import { User } from '../models/user.model';
 import { asyncHandler } from '../utilities/asyncHandler';
 import { UserRegistry } from '../models/user.model';
 
-import { AppDataSource } from '../db';
-import { Admin, Admin_level, AdminTable } from '../models/admin.model';
+import { APPDATASOURCE } from '../db';
+import { Admin, Adminlevel, AdminTable } from '../models/admin.model';
 
 const setAdminLevel = asyncHandler(
   async (
-    req: Request<{ _id: string; admin_id: string; level: Admin_level }>,
+    req: Request<{ _id: string; admin_id: string; level: Adminlevel }>,
     res: Response,
     next: NextFunction,
   ) => {
     try {
-      const updatedAdmin = await AppDataSource.createQueryBuilder()
+      const updatedAdmin = await APPDATASOURCE.createQueryBuilder()
         .update(AdminTable)
         .set({ level: req.body.level })
         .where('_id = :_id', { _id: req.body._id })
@@ -75,7 +75,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response, next: Next
     // });
     const existedUser = await UserRegistry.createQueryBuilder('user')
       .where('user.email = :email', { email: userInfo.email })
-      .orWhere('user.user_id =  :user_id', { user_id: userInfo.user_id })
+      .orWhere('user.user_id =  :user_id', { user_id: userInfo.userId })
       .getOne();
 
     if (existedUser) {
@@ -87,7 +87,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response, next: Next
     Object.assign(newUser, userInfo);
     newUser.setPassword(userInfo.password_hash);
 
-    const user = await AppDataSource.createQueryBuilder()
+    const user = await APPDATASOURCE.createQueryBuilder()
       .insert()
       .into(UserRegistry)
       .values(newUser)
@@ -129,7 +129,7 @@ const deleteUser = asyncHandler(
             `User not found`);
         }
         deletedUser.push(foundUser);
-        const status = await AppDataSource.createQueryBuilder()
+        const status = await APPDATASOURCE.createQueryBuilder()
           .delete()
           .from(UserRegistry)
           .where('_id= :id', { id: foundUser._id })

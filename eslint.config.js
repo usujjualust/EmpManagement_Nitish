@@ -1,24 +1,61 @@
 import globals from 'globals';
-import pluginJs from '@eslint/js';
+// import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import pkg from 'eslint-config-prettier'; // Importing the whole package
-const { rules } = pkg;
+import pkg from 'eslint-config-prettier';
+import stylistic from '@stylistic/eslint-plugin'
+
+const { rules: prettierRules } = pkg;
 
 export default [
   {
-    files: ['**/*.{js,mjs,cjs,ts}'],
+    files: ['**/*.ts}'],
     languageOptions: {
       globals: globals.browser,
-      parser: tseslint.Parser, // Ensure to use the TypeScript parser
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json', // Adjust this path if needed
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint.plugin,
+      '@stylistic': stylistic,
     },
     rules: {
-      // Custom rules
-      '@typescript-eslint/no-explicit-any': 'off', // Disable the rule globally
-      // Other custom rules can go here
-      ...rules, // Include rules from eslint-config-prettier
+      // Indentation
+      'indent': ['error', 2],
+      '@stylistic/indent': ['error', 2],
+      
+      // Spacing
+      'array-bracket-spacing': ['error', 'never'],
+      'object-curly-spacing': ['error', 'always'],
+      'comma-spacing': ['error', { 'before': false, 'after': true }],
+      
+      // Naming conventions
+      'camelcase': ['error', { 'properties': 'never' }],
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          'selector': 'variable',
+          'format': ['camelCase', 'UPPER_CASE']
+        },
+        {
+          'selector': 'function',
+          'format': ['camelCase']
+        },
+        {
+          'selector': 'typeLike',
+          'format': ['PascalCase']
+        }
+      ],
+      
+      // Other rules
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'no-unused-vars': 'warn',
+      'semi': ['error', 'always'],
+      
+      ...prettierRules,
     },
+  
   },
-  // Recommended configurations
-  pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
 ];
