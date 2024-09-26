@@ -30,7 +30,12 @@ const setAdminLevel = asyncHandler(
     }
   },
 );
-const getAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+const getAdmin = asyncHandler(
+  async (
+    req: Request, 
+    res: Response, 
+    next: NextFunction
+  ) => {
   try {
     await AdminTable.loadAdminsFromUserRegistry();
     const admins: Admin[] = await AdminTable.createQueryBuilder().getMany();
@@ -49,7 +54,12 @@ const getAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunc
   // res.send("ok")
 });
 
-const getAll = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+const getAll = asyncHandler(
+  async (
+    req: Request, 
+    res: Response, 
+    next: NextFunction
+  ) => {
   try {
     const users: User[] = await UserRegistry.createQueryBuilder('user').getMany();
     if (users.length === 0) {

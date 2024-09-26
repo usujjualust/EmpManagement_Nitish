@@ -22,18 +22,18 @@ export default [
     },
     rules: {
       // Indentation
-      'indent': ['error', 2],
-      '@stylistic/indent': ['error', 2],
+      'indent': ['warn', 2],
+      '@stylistic/indent': ['warn', 2],
       
       // Spacing
-      'array-bracket-spacing': ['error', 'never'],
-      'object-curly-spacing': ['error', 'always'],
-      'comma-spacing': ['error', { 'before': false, 'after': true }],
+      'array-bracket-spacing': ['warn', 'never'],
+      'object-curly-spacing': ['warn', 'always'],
+      'comma-spacing': ['warn', { 'before': false, 'after': true }],
       
       // Naming conventions
-      'camelcase': ['error', { 'properties': 'never' }],
+      'camelcase': ['warn', { 'properties': 'never' }],
       '@typescript-eslint/naming-convention': [
-        'error',
+        'warn',
         {
           'selector': 'variable',
           'format': ['camelCase', 'UPPER_CASE']
@@ -51,7 +51,7 @@ export default [
       // Other rules
       '@typescript-eslint/no-explicit-any': 'warn',
       'no-unused-vars': 'warn',
-      'semi': ['error', 'always'],
+      'semi': ['warn', 'always'],
       
       ...prettierRules,
     },

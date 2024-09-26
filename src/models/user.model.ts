@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 import * as argon2 from 'argon2';
 
-type Role = 'admin' | 'employee' | 'store';
-type Status = 'active' | 'notice' | 'inactive';
+export type UserRole = 'admin' | 'employee' | 'store';
+export type Status = 'active' | 'notice' | 'inactive';
 
 export type User = {
   _id?: string;
@@ -19,7 +19,7 @@ export type User = {
   email: string;
   password_hash: string;
   status: Status;
-  role: Role;
+  role: UserRole;
   created_at?: Date;
 };
 
@@ -53,7 +53,7 @@ export class UserRegistry extends BaseEntity {
     type: 'enum',
     enum: ['admin', 'employee', 'store'],
   })
-  role!: Role;
+  role!: UserRole;
 
   @CreateDateColumn()
   created_at!: Date;

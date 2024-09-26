@@ -26,7 +26,6 @@ const APPDATASOURCE = new DataSource({
   synchronize: true,
   logging: true,
   connectTimeoutMS: 300,
-
   entities: [UserRegistry, AdminTable],
 });
 
