@@ -7,7 +7,7 @@ const TOKEN = {
     accessSecret :  process.env.AUTH_ACCESS_TOKEN_SECRET,
     refreshSecret : process.env.AUTH_REFRESH_TOKEN_SECRET
 }
-interface AuthenticatedRequest extends Request {
+  export interface AuthenticatedRequest extends Request {
     userId?: string;
     token?: string;
   }

@@ -1,19 +1,21 @@
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Response } from "express"
 import { asyncHandler } from "../../utilities/asyncHandler"
 import { User, UserRegistry } from "../../models/user.model"
 import { UserPermissions } from "../../models/permisson.model"
 import { AdminTable,  } from "../../models/admin.model"
+import { AuthenticatedRequest } from "../authorization"
 
  
 const checkPermission = (permission:string) => {
-    return asyncHandler(async (req: Request, res: Response, next: NextFunction)=>{
+    return asyncHandler(async (req: AuthenticatedRequest, res: Response, next: NextFunction)=>{
             try {
-                const userRole: User | null = req.body.user_id ? await UserRegistry.createQueryBuilder('user')
-                                                        .where('user.user_id = :user_id', { user_id: req.body.user_id })
+                console.log(req.userId)
+                const userRole: User | null = req.userId ? await UserRegistry.createQueryBuilder('user')
+                                                        .where('user._id = :_id', { _id: req.userId })
                                                         .getOne():null;                                        
             if(! userRole){
                 console.error("Requested user doesnot exist")
-                return res.status(404).send(`Requested user ${req.body.user_id} not found`).statusMessage = 'user not found'
+                return res.status(404).send(`Requested user ${req.body.userId} not found`).statusMessage = 'user not found'
             } 
             let userPermissions: string[] | undefined;
             if(userRole.role === 'admin'){
