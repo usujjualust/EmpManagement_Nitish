@@ -69,7 +69,7 @@ export class AdminTable extends BaseEntity {
   static async loadAdminsFromUserRegistry(): Promise<void> {
     console.log('adding admins from UserRegistry');
     const admins: UserRegistry[] = await APPDATASOURCE.getRepository(UserRegistry).findBy({
-      userId: Like('USR%'),
+      user_id: Like('USR%'),
       role: Equal('admin'),
     });
     console.log(admins);
@@ -78,16 +78,16 @@ export class AdminTable extends BaseEntity {
     }
 
     for (const admin of admins) {
-      const { userId, ...rest } = admin;
+      const { user_id, ...rest } = admin;
 
       const existingAdmin = await AdminTable.findOne({
-        where: { admin_id: userId },
+        where: { admin_id: user_id },
       });
 
       if (!existingAdmin) {
         await AdminTable.create({
           ...rest,
-          admin_id: userId,
+          admin_id: user_id,
           level: 'limited',
           phone: '',
         }).save();

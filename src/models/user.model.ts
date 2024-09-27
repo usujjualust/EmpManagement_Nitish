@@ -14,7 +14,7 @@ export type Status = 'active' | 'notice' | 'inactive';
 
 export type User = {
   _id?: string;
-  userId: string;
+  user_id: string;
   full_name: string;
   email: string;
   password_hash: string;
@@ -29,7 +29,7 @@ export class UserRegistry extends BaseEntity {
   _id!: string;
 
   @Column({ unique: true })
-  userId!: string;
+  user_id!: string;
 
   @Column()
   full_name!: string;
@@ -75,7 +75,7 @@ export class UserRegistry extends BaseEntity {
   setPassword(password: string) {
     this.tempPassword = password;
   }
-  async isPasswordCorrect(password: string): Promise<boolean> {
-    return await argon2.verify(this.password_hash, password);
+  static async isPasswordCorrect(password: string, password_hash: string): Promise<boolean> {
+    return await argon2.verify(password_hash, password);
   }
 }

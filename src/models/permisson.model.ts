@@ -1,4 +1,5 @@
 import Roles from "./accessRole.model"
+import { Adminlevel } from "./admin.model"
 
 
 export class UserPermissions {
@@ -6,7 +7,11 @@ export class UserPermissions {
     constructor(){
         this.permissions = []
     }
-    getPermissionByRoleName(roleName: string): string[] | undefined {
-        return new Roles().getRoleByName(roleName)?.permission;
+    getPermissionBy(roleName: string, level?: Adminlevel): string[] | undefined {
+            if(level && roleName === 'admin'){
+               return new Roles().getRoleBy('admin', level)?.permission
+            }else{
+                return new Roles().getRoleBy(roleName)?.permission
+            }
     }
 }
