@@ -14,12 +14,12 @@ export const accessRoles: Accessrole[] = [
     {
         "name": "admin",
         "level": 'limited',
-        "permission": ['viewAdmin']
+        "permission": ['viewAdmin','getUsers', 'addUser']
     },
     {
         "name": "admin",
         "level": 'super',
-        "permission": ['setAdminLevel', 'viewAdmin']
+        "permission": ['setAdminLevel', 'viewAdmin', 'getUsers', 'addUser', 'deleteUser']
     },
     {
         "name": "employee",

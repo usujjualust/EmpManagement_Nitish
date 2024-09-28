@@ -7,12 +7,12 @@ const { verify } = jwt;
 import { APPDATASOURCE } from '../db';
 import { Admin, Adminlevel, AdminTable } from '../models/admin.model';
 import { generateAccessToken, generateRefreshToken } from '../middlewares/authentication';
+import { adminUpdate, deleteService, fetchAdmin, fetchAll, fetchUser } from '../services/admin.services';
 
 
 const adminLogin = asyncHandler(async (req:Request, res:Response, next:NextFunction)=>{
   try {
     const {userId, password} = req.body
-    // console.log(userId, password, req.body)
     if (! userId ){
       console.error('userId is not provided')
       return res.status(400).send('user id not provided');
@@ -21,10 +21,7 @@ const adminLogin = asyncHandler(async (req:Request, res:Response, next:NextFunct
       console.error('password is not provided')
       return res.status(400).send('password not provided');
     }
-    const user: Admin | null = await AdminTable.createQueryBuilder('admin')
-          .where('admin.admin_id = :admin_id',{admin_id: userId })
-          .getOne();
-    // console.log(password_hash)      
+    const user: Admin | null = await fetchAdmin(userId);     
     if(! user){
       return res.status(404).send('Admin not found!');
     }
@@ -38,7 +35,6 @@ const adminLogin = asyncHandler(async (req:Request, res:Response, next:NextFunct
       if(err){
           console.log(err);
       }});
-    //console.log(verifycode);
     console.log({at: accessToken })
     const refreshToken = await generateRefreshToken(user);
     verifycode = verify (refreshToken, process.env.AUTH_REFRESH_TOKEN_SECRET!,(err)=>{
@@ -57,17 +53,12 @@ const adminLogin = asyncHandler(async (req:Request, res:Response, next:NextFunct
 })
 const setAdminLevel = asyncHandler(
   async (
-    req: Request<{ _id: string; admin_id: string; level: Adminlevel }>,
+    req: Request<{ user_id: string; level: Adminlevel }>,
     res: Response,
     next: NextFunction,
   ) => {
     try {
-      const updatedAdmin = await APPDATASOURCE.createQueryBuilder()
-        .update(AdminTable)
-        .set({ level: req.body.level })
-        .where('_id = :_id', { _id: req.body._id })
-        .andWhere('admin_id = :admin_id', { admin_id: req.body.user_id })
-        .execute();
+      const updatedAdmin = await adminUpdate('level', req.body.level, req.body.user_id)
       if (updatedAdmin.affected === 0) {
         return res.status(404).send('Admin not updated!!').statusMessage = 'Not Found';
       }
@@ -110,7 +101,7 @@ const getAll = asyncHandler(
     next: NextFunction
   ) => {
   try {
-    const users: User[] = await UserRegistry.createQueryBuilder('user').getMany();
+    const users = await fetchAll("UserRegistry")
     if (users.length === 0) {
       return res.status(404).send('Empty, no data found!');
     } else {
@@ -125,13 +116,6 @@ const getAll = asyncHandler(
 const registerUser = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userInfo: User = req.body;
-
-    // const existedUser = await UserRegistry.findOne({
-    //     where: [
-    //         { email: userInfo.email },
-    //         { userId: userInfo.userId }
-    //     ]
-    // });
     const existedUser = await UserRegistry.createQueryBuilder('user')
       .where('user.email = :email', { email: userInfo.email })
       .orWhere('user.user_id =  :userId', { userId: userInfo.user_id })
@@ -177,10 +161,7 @@ const deleteUser = asyncHandler(
           res.status(400).send(`User id and email not provided`).statusMessage = `Invalid request`;
           throw new Error('Invalid request format');
         }
-        const foundUser = await UserRegistry.createQueryBuilder('user')
-          .where('user.user_id= :id', { id: user.userId })
-          .orWhere('user.email= :email', { email: user.email })
-          .getOne();
+        const foundUser = await fetchUser(user.userId, user.email)
         console.log(foundUser);
         if (foundUser === null) {
           console.error(`User: ${user.userId} ${user.email} not found`);
@@ -190,21 +171,11 @@ const deleteUser = asyncHandler(
             `User not found`);
         }
         deletedUser.push(foundUser);
-        const source = foundUser.role === 'admin'? 'AdminTable' : foundUser.role === 'employee' ? 'UserRegistry': 'UserRegistry';
-        const uid = foundUser.role === 'admin'? 'admin' : null
-        const status2 = await APPDATASOURCE.createQueryBuilder()
-          .delete()
-          .from(source)
-          .where(`${uid}_id= :id`, { id: foundUser.user_id })
-          .execute();
+        const source: 'StoreTable' | 'EmployeeTable' | 'AdminTable' | 'UserRegistry' = foundUser.role === 'admin'? 'AdminTable' : foundUser.role === 'employee' ? 'EmployeeTable': 'StoreTable';
+        const status2 = await deleteService(source, foundUser.user_id, foundUser.role,);
         console.log(status2);
-        const status = await APPDATASOURCE.createQueryBuilder()
-          .delete()
-          .from(UserRegistry)
-          .where('_id= :id', { id: foundUser._id })
-          .execute();
+        const status = await deleteService("UserRegistry", foundUser.user_id, "user");
         console.log(status);
-       
       }
       
       if (deletedUser.length === 0) {
