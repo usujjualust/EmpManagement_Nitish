@@ -79,7 +79,6 @@ const getAdmin = asyncHandler(
   try {
     await AdminTable.loadAdminsFromUserRegistry();
     const admins: Admin[] = await AdminTable.createQueryBuilder().getMany();
-    //  res.send('ok')
     if (admins.length === 0) {
       return res.status(404).send('Empty, no data found!');
     } else {
@@ -90,8 +89,6 @@ const getAdmin = asyncHandler(
     res.status(404).send(error);
     next(error);
   }
-
-  // res.send("ok")
 });
 
 const getAll = asyncHandler(
