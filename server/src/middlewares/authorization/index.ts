@@ -1,6 +1,8 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { asyncHandler } from '../../utilities/asyncHandler';
 import { Request, Response, NextFunction } from 'express';
+import { generateAccessToken } from '../authentication';
+import { fetchUser } from '../../services/admin.services';
 const { verify } = jwt;
 
 const TOKEN = {
@@ -32,13 +34,43 @@ export const requireAuthentication = asyncHandler(async(req: AuthenticatedReques
         next()
     } catch (error) {
         console.log(error)
-
-        // const expParams = {
-        //     error: "expired_access token",
-        //     description: "access token expired"
-        // };
-
+        if(error instanceof Error && error.name === 'TokenExpiredError'){
+          return cookieAuthentication(req, res, next)
+        }
         console.error("Authentication error", error)
         next(error)
     }
+})
+
+export const cookieAuthentication = asyncHandler(async(req: AuthenticatedRequest, res: Response, next: NextFunction) =>{
+  try {
+    const authCookie = req.cookies['refreshToken']
+    console.log(`authCookie : ${authCookie}`)
+    if (!authCookie) {
+      return res.status(401).json({ error: 'Invalid refresh token' });
+  }
+    const decodeRefreshToken = verify(authCookie,TOKEN.refreshSecret!)as CustomJwtPayload;
+    const user_id = decodeRefreshToken._id
+    const user = await fetchUser(undefined, undefined, user_id)
+    if(! user) {
+      return res.status(404).json({id: user_id,
+                            messaged: "not found"
+      })
+    }
+    const newAccessToken = await generateAccessToken(user)
+    const decodedAccessToken = verify(newAccessToken,TOKEN.accessSecret!)as CustomJwtPayload;
+    req.userId = decodedAccessToken._id;
+    req.token = newAccessToken;
+    res.setHeader('Authorization', `Bearer ${newAccessToken}`)
+    next()
+    if(authCookie == null ) {
+      res.status(401).json({error : 'Invalid refresh token'})
+    } 
+
+
+
+  } catch (error) {
+    console.error("Authentication error", error)
+    next(error)
+  }
 })

@@ -8,6 +8,7 @@ import { APPDATASOURCE } from '../db';
 import { Admin, Adminlevel, AdminTable } from '../models/admin.model';
 import { generateAccessToken, generateRefreshToken } from '../middlewares/authentication';
 import { adminUpdate, deleteService, fetchAdmin, fetchAll, fetchUser } from '../services/admin.services';
+import { Store, StoreTable } from '../models/store.model';
 
 
 const adminLogin = asyncHandler(async (req:Request, res:Response, next:NextFunction)=>{
@@ -43,6 +44,8 @@ const adminLogin = asyncHandler(async (req:Request, res:Response, next:NextFunct
       } });
     console.log(verifycode);
     console.log({rt: refreshToken })
+    res.setHeader('Authorization', `Bearer ${accessToken}`)
+    res.cookie('refreshToken', refreshToken,{maxAge:900000, httpOnly: true})
     return res.status(200).json({rt: refreshToken ,at: accessToken, msg: 'admin logged in' });
 
   } catch (error) {
@@ -70,7 +73,7 @@ const setAdminLevel = asyncHandler(
     }
   },
 );
-const getAdmin = asyncHandler(
+const getAdmins = asyncHandler(
   async (
     req: Request, 
     res: Response, 
@@ -83,6 +86,26 @@ const getAdmin = asyncHandler(
       return res.status(404).send('Empty, no data found!');
     } else {
       res.status(200).json(admins);
+    }
+  } catch (error) {
+    console.error('Error while fetching data', error);
+    res.status(404).send(error);
+    next(error);
+  }
+});
+const getStores = asyncHandler(
+  async (
+    req: Request, 
+    res: Response, 
+    next: NextFunction
+  ) => {
+  try {
+    await StoreTable.loadStoresFromUserRegistry();
+    const stores: Store[] = await StoreTable.createQueryBuilder().getMany();
+    if (stores.length === 0) {
+      return res.status(404).send('Empty, no data found!');
+    } else {
+      res.status(200).json(stores);
     }
   } catch (error) {
     console.error('Error while fetching data', error);
@@ -134,6 +157,8 @@ const registerUser = asyncHandler(async (req: Request, res: Response, next: Next
       .execute();
     if (newUser.role === 'admin') {
       await AdminTable.loadAdminsFromUserRegistry();
+    } else if (newUser.role === 'store') {
+      await StoreTable.loadStoresFromUserRegistry();
     }
     return res.status(201).json(user);
   } catch (error) {
@@ -164,10 +189,11 @@ const deleteUser = asyncHandler(
           console.error(`User: ${user.userId} ${user.email} not found`);
           return (res
             .status(404)
-            .send(`Reaquired user ${user.userId} ${user.email} not found`).statusMessage =
+            .send(`Required user ${user.userId} ${user.email} not found`).statusMessage =
             `User not found`);
         }
         deletedUser.push(foundUser);
+        
         const source: 'StoreTable' | 'EmployeeTable' | 'AdminTable' | 'UserRegistry' = foundUser.role === 'admin'? 'AdminTable' : foundUser.role === 'employee' ? 'EmployeeTable': 'StoreTable';
         const status2 = await deleteService(source, foundUser.user_id, foundUser.role,);
         console.log(status2);
@@ -178,7 +204,8 @@ const deleteUser = asyncHandler(
       if (deletedUser.length === 0) {
         return res.status(400);
       }
-      return res.status(201).json({user: deletedUser,msg : 'deleted successfully'});
+      
+      return res.json({user: deletedUser,msg : 'deleted successfully'});
     } catch (error) {
       console.error('internal server error');
       res.status(500).statusMessage = 'Internal server error';
@@ -187,4 +214,5 @@ const deleteUser = asyncHandler(
   },
 );
 
-export { registerUser, getAll, deleteUser, getAdmin, setAdminLevel, adminLogin };
+export { registerUser, getAll, deleteUser, getAdmins, setAdminLevel, adminLogin, getStores };
+

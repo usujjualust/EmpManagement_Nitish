@@ -17,14 +17,14 @@ const adminUpdate = async(key : string, value: unknown, a_id: string)=>{
 }
 // store table and employee table creation is pending
   
-const fetchAll = async(reqKey: 'store' | 'employee' | 'AdminTable' | 'UserRegistry' ):Promise<unknown[]> => {
+const fetchAll = async(reqKey: 'StoreTable' | 'employee' | 'AdminTable' | 'UserRegistry' ):Promise<unknown[]> => {
     return APPDATASOURCE.createQueryBuilder()
                         .select()
                         .from(reqKey, '')
                         .execute()
 }
 
-const deleteService =  async(source:'StoreTable' | 'EmployeeTable' | 'AdminTable' | 'UserRegistry', user_id : string,role?: 'admin' | 'store' | 'employee' | 'user'):Promise<unknown> => {
+const deleteService =  async(source:'StoreTable' | 'EmployeeTable' | 'AdminTable' | 'UserRegistry', user_id : string, role?: 'admin' | 'store' | 'employee' | 'user'):Promise<unknown> => {
     return APPDATASOURCE.createQueryBuilder()
                         .delete()
                         .from(source)
@@ -33,10 +33,11 @@ const deleteService =  async(source:'StoreTable' | 'EmployeeTable' | 'AdminTable
 }
 //userRegistry services
 
-const fetchUser = async (user_id? : string, user_email?: string):Promise<UserRegistry | null>  =>{
+const fetchUser = async (user_id? : string, user_email?: string, _id?: string ):Promise<UserRegistry | null>  =>{
     return UserRegistry.createQueryBuilder('user')
             .where('user.user_id = :user_id',{user_id: user_id })
             .orWhere('user.email= :email', { email: user_email })
+            .orWhere('user._id= :id', {id: _id})
             .getOne();
 }
 

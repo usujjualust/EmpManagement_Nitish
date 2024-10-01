@@ -15,6 +15,7 @@
 import { DataSource } from 'typeorm';
 import { UserRegistry } from '../models/user.model';
 import { AdminTable } from '../models/admin.model';
+import { StoreTable } from '../models/store.model';
 
 const APPDATASOURCE = new DataSource({
   type: 'postgres',
@@ -26,7 +27,7 @@ const APPDATASOURCE = new DataSource({
   synchronize: true,
   logging: true,
   connectTimeoutMS: 300,
-  entities: [UserRegistry, AdminTable],
+  entities: [UserRegistry, AdminTable, StoreTable],
 });
 
 export { APPDATASOURCE };
