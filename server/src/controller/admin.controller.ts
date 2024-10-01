@@ -144,7 +144,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response, next: Next
     if (existedUser) {
       // Throw an error if the user already exists
       console.log(existedUser);
-      return next(new Error('User already exists'));
+      return res.json({message: "user already exits in the user registry"}).status(409);
     }
     const newUser = new UserRegistry();
     Object.assign(newUser, userInfo);
